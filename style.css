@@ -42,7 +42,7 @@ h1::after {
     transform: translateX(-50%);
     width: 300px;
     height: 3px;
-    background-color: #667eea;
+    background-color: #1F1EEE;
     border-radius: 2px;
 }
 

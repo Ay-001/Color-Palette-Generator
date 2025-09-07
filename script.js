@@ -1,15 +1,98 @@
+// const generateBtn = document.getElementById("generate-btn");
+// const paletteContainer = document.querySelector(".palette-container");
+// const copyBtn = document.querySelector(".copy-btn");
+
+// generateBtn.addEventListener("click", generatePalette);
+
+// paletteContainer.addEventListener("click", function (e) {
+//     if(e.target.classList.contains("copy-btn")){
+//         const hexValue = e.target.previousElementSibling.textContent
+
+//         navigator.clipboard.writeText(hexValue)
+//         .then(() => showCopyScuccess())
+//         .catch( (err) => console.log(err))
+//     }
+// });
+
+// // Generate palette on page load
+// generatePalette();
+
+// function generatePalette() {
+//     const colors = [];
+//     for (let i = 0; i < 5; i++) {
+//         colors.push(generateRandomColor());
+//     }
+//     updatePaletteDisplay(colors);
+// }
+
+// function generateRandomColor() {
+//     // Generate a random 6-digit hex code
+//     return `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`;
+// }
+
+// function updatePaletteDisplay(colors) {
+//     const colorBoxes = paletteContainer.querySelectorAll(".color-box");
+//     colorBoxes.forEach((box, index) => {
+//         const colorDiv = box.querySelector(".color");
+//         const hexValue = box.querySelector(".hex-value");
+//         colorDiv.style.backgroundColor = colors[index];
+//         hexValue.textContent = colors[index].toUpperCase();
+//     });
+// }
+
+// // Add copy-to-clipboard functionality
+// // document.querySelectorAll(".copy-btn").forEach(btn => {
+// //     btn.addEventListener("click", () => {
+// //         const hexValue = btn.previousElementSibling.textContent;
+// //         navigator.clipboard.writeText(hexValue)
+// //             .then(() => {
+// //                 alert(`Copied to clipboard: ${hexValue}`);
+// //             })
+// //             .catch(err => {
+// //                 console.error("Failed to copy: ", err);
+// //                 alert("Failed to copy hex code");
+// //             });
+// //     });
+// // });
+
+// function updatePaletteDisplay(colors) {
+//     const colorBoxes = document.querySelectorAll(".color-box")
+
+//     colorBoxes.forEach((box,index) => {
+//         const color =colors[index]
+//         const colorDiv = box.querySelector(".color")
+//         const hexValue = box.querySelector(".hex-value")
+
+//         colorDiv.style.backgroundColor = color;
+//         hexValue.textContent = color;
+//  })
+// }
+
+// function showCopySuccess() {
+//     copyBtn.classList.remove("far", "fa-copy");
+//     copyBtn.classList.add("fas", "fa-check");
+
+//     copyBtn.style.color = "#48bb78"
+// }
+
+
 const generateBtn = document.getElementById("generate-btn");
 const paletteContainer = document.querySelector(".palette-container");
 
 generateBtn.addEventListener("click", generatePalette);
 
 paletteContainer.addEventListener("click", function (e) {
-    if(e.target.classList.contains("copy-btn")){
-        const hexValue = e.target.previousElementSibling.textContent
+    if (e.target.classList.contains("copy-btn")) {
+        const hexValue = e.target.previousElementSibling.textContent;
 
         navigator.clipboard.writeText(hexValue)
-        .then(() => showCopyScuccess())
-        .catch( (err) => console.log(err))
+            .then(() => showCopySuccess(e.target))
+            .catch((err) => console.log(err));
+    } else if (e.target.classList.contains("color")) {
+        const hexValue = e.target.nextElementSibling.querySelector(".hex-value").textContent;
+        navigator.clipboard.writeText(hexValue)
+            .then(() => showCopySuccess(e.target.nextElementSibling.querySelector(".copy-btn")))
+            .catch((err) => console.log(err));
     }
 });
 
@@ -39,37 +122,15 @@ function updatePaletteDisplay(colors) {
     });
 }
 
-// Add copy-to-clipboard functionality
-document.querySelectorAll(".copy-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-        const hexValue = btn.previousElementSibling.textContent;
-        navigator.clipboard.writeText(hexValue)
-            .then(() => {
-                alert(`Copied to clipboard: ${hexValue}`);
-            })
-            .catch(err => {
-                console.error("Failed to copy: ", err);
-                alert("Failed to copy hex code");
-            });
-    });
-});
+function showCopySuccess(copyBtn) {
+    copyBtn.classList.remove("far", "fa-copy");
+    copyBtn.classList.add("fas", "fa-check");
 
-function updatePaletteDisplay(colors) {
-    const colorBoxes = document.querySelectorAll(".color-box")
+    copyBtn.style.color = "#48bb78";
 
-    colorBoxes.forEach((box,index) => {
-        const color =colors[index]
-        const colorDiv = box.querySelector(".color")
-        const hexValue = box.querySelector(".hex-value")
-
-        colorDiv.style.backgroundColor = color;
-        hexValue.textContent = color;
- })
+    setTimeout(() => {
+        copyBtn.classList.remove("fas", "fa-check");
+        copyBtn.classList.add("far", "fa-copy");
+        copyBtn.style.color = "";
+    }, 900);
 }
-
-// function showCopySuccess() {
-//     copyBtn.classList.remove("far", "fa-copy");
-//     copyBtn.classList.add("fas", "fa-check");
-
-//     copyBtn.style.color = "#48bb78"
-// }
